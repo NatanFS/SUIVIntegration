@@ -1,0 +1,970 @@
+{
+	"fipeDataCollection": [
+		{
+			"year": 2015,
+			"fipeId": 44334,
+			"makerDescription": "GM - Chevrolet",
+			"modelDescription": "PRISMA",
+			"versionDescription": "SED. LT 1.4 8V FLEXPOWER 4P",
+			"fuel": "Gasolina",
+			"currentValue": 47710.00,
+			"priceHistory": [
+				{
+					"monthUpdate": 1,
+					"yearUpdate": 2017,
+					"value": 38208.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 2,
+					"yearUpdate": 2017,
+					"value": 38509.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 3,
+					"yearUpdate": 2017,
+					"value": 38551.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 4,
+					"yearUpdate": 2017,
+					"value": 38425.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 5,
+					"yearUpdate": 2017,
+					"value": 38298.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 6,
+					"yearUpdate": 2017,
+					"value": 38205.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 7,
+					"yearUpdate": 2017,
+					"value": 38117.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 8,
+					"yearUpdate": 2017,
+					"value": 38635.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 9,
+					"yearUpdate": 2017,
+					"value": 39141.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 10,
+					"yearUpdate": 2017,
+					"value": 38431.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 11,
+					"yearUpdate": 2017,
+					"value": 38963.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 12,
+					"yearUpdate": 2017,
+					"value": 38986.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 1,
+					"yearUpdate": 2018,
+					"value": 39518.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 2,
+					"yearUpdate": 2018,
+					"value": 40066.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 3,
+					"yearUpdate": 2018,
+					"value": 40084.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 4,
+					"yearUpdate": 2018,
+					"value": 40643.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 5,
+					"yearUpdate": 2018,
+					"value": 41175.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 6,
+					"yearUpdate": 2018,
+					"value": 41730.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 7,
+					"yearUpdate": 2018,
+					"value": 42284.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 8,
+					"yearUpdate": 2018,
+					"value": 41086.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 9,
+					"yearUpdate": 2018,
+					"value": 40264.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 10,
+					"yearUpdate": 2018,
+					"value": 40169.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 11,
+					"yearUpdate": 2018,
+					"value": 40714.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 12,
+					"yearUpdate": 2018,
+					"value": 40875.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 1,
+					"yearUpdate": 2019,
+					"value": 39633.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 2,
+					"yearUpdate": 2019,
+					"value": 39395.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 3,
+					"yearUpdate": 2019,
+					"value": 39248.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 4,
+					"yearUpdate": 2019,
+					"value": 39165.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 5,
+					"yearUpdate": 2019,
+					"value": 39105.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 6,
+					"yearUpdate": 2019,
+					"value": 38944.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 7,
+					"yearUpdate": 2019,
+					"value": 38804.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 8,
+					"yearUpdate": 2019,
+					"value": 38691.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 9,
+					"yearUpdate": 2019,
+					"value": 38555.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 10,
+					"yearUpdate": 2019,
+					"value": 38441.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 11,
+					"yearUpdate": 2019,
+					"value": 38181.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 12,
+					"yearUpdate": 2019,
+					"value": 38046.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 1,
+					"yearUpdate": 2020,
+					"value": 37661.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 2,
+					"yearUpdate": 2020,
+					"value": 37449.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 3,
+					"yearUpdate": 2020,
+					"value": 37287.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 4,
+					"yearUpdate": 2020,
+					"value": 37133.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 5,
+					"yearUpdate": 2020,
+					"value": 36930.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 6,
+					"yearUpdate": 2020,
+					"value": 36864.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 7,
+					"yearUpdate": 2020,
+					"value": 36694.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 8,
+					"yearUpdate": 2020,
+					"value": 36452.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 9,
+					"yearUpdate": 2020,
+					"value": 36213.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 10,
+					"yearUpdate": 2020,
+					"value": 36490.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 11,
+					"yearUpdate": 2020,
+					"value": 36667.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 12,
+					"yearUpdate": 2020,
+					"value": 37332.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 1,
+					"yearUpdate": 2021,
+					"value": 37750.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 2,
+					"yearUpdate": 2021,
+					"value": 37929.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 3,
+					"yearUpdate": 2021,
+					"value": 38546.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 4,
+					"yearUpdate": 2021,
+					"value": 40295.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 5,
+					"yearUpdate": 2021,
+					"value": 40688.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 6,
+					"yearUpdate": 2021,
+					"value": 42080.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 7,
+					"yearUpdate": 2021,
+					"value": 43309.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 8,
+					"yearUpdate": 2021,
+					"value": 44244.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 9,
+					"yearUpdate": 2021,
+					"value": 45162.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 10,
+					"yearUpdate": 2021,
+					"value": 45930.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 11,
+					"yearUpdate": 2021,
+					"value": 46765.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 12,
+					"yearUpdate": 2021,
+					"value": 47471.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 1,
+					"yearUpdate": 2022,
+					"value": 47936.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 2,
+					"yearUpdate": 2022,
+					"value": 48510.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 3,
+					"yearUpdate": 2022,
+					"value": 49349.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 4,
+					"yearUpdate": 2022,
+					"value": 49539.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 5,
+					"yearUpdate": 2022,
+					"value": 50390.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 6,
+					"yearUpdate": 2022,
+					"value": 48929.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 7,
+					"yearUpdate": 2022,
+					"value": 48229.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 8,
+					"yearUpdate": 2022,
+					"value": 48905.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 9,
+					"yearUpdate": 2022,
+					"value": 48511.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 10,
+					"yearUpdate": 2022,
+					"value": 48288.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 11,
+					"yearUpdate": 2022,
+					"value": 49016.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 12,
+					"yearUpdate": 2022,
+					"value": 47785.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 1,
+					"yearUpdate": 2023,
+					"value": 48960.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 2,
+					"yearUpdate": 2023,
+					"value": 49011.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 3,
+					"yearUpdate": 2023,
+					"value": 47710.00,
+					"isPrediction": false
+				}
+			]
+		},
+		{
+			"year": 2015,
+			"fipeId": 44369,
+			"makerDescription": "GM - Chevrolet",
+			"modelDescription": "PRISMA",
+			"versionDescription": "SED. LT 1.4 8V FLEXPOWER 4P AUT.",
+			"fuel": "Gasolina",
+			"currentValue": 50950.00,
+			"priceHistory": [
+				{
+					"monthUpdate": 1,
+					"yearUpdate": 2017,
+					"value": 42460.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 2,
+					"yearUpdate": 2017,
+					"value": 41556.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 3,
+					"yearUpdate": 2017,
+					"value": 42123.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 4,
+					"yearUpdate": 2017,
+					"value": 41126.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 5,
+					"yearUpdate": 2017,
+					"value": 40965.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 6,
+					"yearUpdate": 2017,
+					"value": 40856.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 7,
+					"yearUpdate": 2017,
+					"value": 40912.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 8,
+					"yearUpdate": 2017,
+					"value": 41083.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 9,
+					"yearUpdate": 2017,
+					"value": 41634.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 10,
+					"yearUpdate": 2017,
+					"value": 40911.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 11,
+					"yearUpdate": 2017,
+					"value": 40852.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 12,
+					"yearUpdate": 2017,
+					"value": 40698.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 1,
+					"yearUpdate": 2018,
+					"value": 41232.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 2,
+					"yearUpdate": 2018,
+					"value": 41504.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 3,
+					"yearUpdate": 2018,
+					"value": 41486.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 4,
+					"yearUpdate": 2018,
+					"value": 41670.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 5,
+					"yearUpdate": 2018,
+					"value": 42219.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 6,
+					"yearUpdate": 2018,
+					"value": 42771.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 7,
+					"yearUpdate": 2018,
+					"value": 42890.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 8,
+					"yearUpdate": 2018,
+					"value": 41940.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 9,
+					"yearUpdate": 2018,
+					"value": 41101.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 10,
+					"yearUpdate": 2018,
+					"value": 40953.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 11,
+					"yearUpdate": 2018,
+					"value": 41516.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 12,
+					"yearUpdate": 2018,
+					"value": 42632.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 1,
+					"yearUpdate": 2019,
+					"value": 42198.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 2,
+					"yearUpdate": 2019,
+					"value": 42312.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 3,
+					"yearUpdate": 2019,
+					"value": 42120.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 4,
+					"yearUpdate": 2019,
+					"value": 42106.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 5,
+					"yearUpdate": 2019,
+					"value": 43261.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 6,
+					"yearUpdate": 2019,
+					"value": 43061.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 7,
+					"yearUpdate": 2019,
+					"value": 42359.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 8,
+					"yearUpdate": 2019,
+					"value": 42036.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 9,
+					"yearUpdate": 2019,
+					"value": 41894.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 10,
+					"yearUpdate": 2019,
+					"value": 41712.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 11,
+					"yearUpdate": 2019,
+					"value": 41327.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 12,
+					"yearUpdate": 2019,
+					"value": 40967.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 1,
+					"yearUpdate": 2020,
+					"value": 40608.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 2,
+					"yearUpdate": 2020,
+					"value": 40327.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 3,
+					"yearUpdate": 2020,
+					"value": 39954.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 4,
+					"yearUpdate": 2020,
+					"value": 39691.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 5,
+					"yearUpdate": 2020,
+					"value": 39405.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 6,
+					"yearUpdate": 2020,
+					"value": 39182.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 7,
+					"yearUpdate": 2020,
+					"value": 38989.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 8,
+					"yearUpdate": 2020,
+					"value": 38805.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 9,
+					"yearUpdate": 2020,
+					"value": 38854.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 10,
+					"yearUpdate": 2020,
+					"value": 39204.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 11,
+					"yearUpdate": 2020,
+					"value": 39385.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 12,
+					"yearUpdate": 2020,
+					"value": 40154.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 1,
+					"yearUpdate": 2021,
+					"value": 40593.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 2,
+					"yearUpdate": 2021,
+					"value": 41021.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 3,
+					"yearUpdate": 2021,
+					"value": 41717.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 4,
+					"yearUpdate": 2021,
+					"value": 43478.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 5,
+					"yearUpdate": 2021,
+					"value": 43784.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 6,
+					"yearUpdate": 2021,
+					"value": 45251.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 7,
+					"yearUpdate": 2021,
+					"value": 45579.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 8,
+					"yearUpdate": 2021,
+					"value": 47161.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 9,
+					"yearUpdate": 2021,
+					"value": 48447.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 10,
+					"yearUpdate": 2021,
+					"value": 48919.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 11,
+					"yearUpdate": 2021,
+					"value": 49615.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 12,
+					"yearUpdate": 2021,
+					"value": 50418.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 1,
+					"yearUpdate": 2022,
+					"value": 51021.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 2,
+					"yearUpdate": 2022,
+					"value": 52263.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 3,
+					"yearUpdate": 2022,
+					"value": 52820.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 4,
+					"yearUpdate": 2022,
+					"value": 53256.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 5,
+					"yearUpdate": 2022,
+					"value": 53706.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 6,
+					"yearUpdate": 2022,
+					"value": 53562.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 7,
+					"yearUpdate": 2022,
+					"value": 51672.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 8,
+					"yearUpdate": 2022,
+					"value": 51320.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 9,
+					"yearUpdate": 2022,
+					"value": 51385.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 10,
+					"yearUpdate": 2022,
+					"value": 51021.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 11,
+					"yearUpdate": 2022,
+					"value": 52545.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 12,
+					"yearUpdate": 2022,
+					"value": 51985.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 1,
+					"yearUpdate": 2023,
+					"value": 52085.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 2,
+					"yearUpdate": 2023,
+					"value": 51899.00,
+					"isPrediction": false
+				},
+				{
+					"monthUpdate": 3,
+					"yearUpdate": 2023,
+					"value": 50950.00,
+					"isPrediction": false
+				}
+			]
+		}
+	],
+	"suivDataCollection": [
+		{
+			"fipeId": 44334,
+			"versionId": 378,
+			"versionDescription": "LT 1.4 8v Flexpower Mec.",
+			"modelId": 52,
+			"modelDescription": "Prisma 4P 2ªG (2013 => 2019)",
+			"makerId": 2,
+			"makerDescription": "Chevrolet"
+		},
+		{
+			"fipeId": 44369,
+			"versionId": 379,
+			"versionDescription": "LT 1.4 8v Flexpower Aut.",
+			"modelId": 52,
+			"modelDescription": "Prisma 4P 2ªG (2013 => 2019)",
+			"makerId": 2,
+			"makerDescription": "Chevrolet"
+		}
+	],
+	"maker": "CHEV",
+	"makerId": 2,
+	"fipeId": null,
+	"description": "PRISMA 1.4MT LT",
+	"plate": "QGC0857",
+	"yearModel": 2015,
+	"yearFab": 2015,
+	"fuel": "Alcool, Gasolina",
+	"chassis": "9BGKS69R0FG450591",
+	"type": "Automóvel",
+	"species": "Passageiro",
+	"bodywork": null,
+	"power": 106,
+	"isNational": true,
+	"axisCount": null,
+	"totalGrossWeight": 1400,
+	"maximumTractionCapacity": 140,
+	"cc": 1400,
+	"seatCount": 5,
+	"loadCapacity": null,
+	"gearBoxNumber": "15711527",
+	"backAxisCount": null,
+	"auxAxisCount": null,
+	"engineNumber": "DXW043848"
+}

@@ -8,6 +8,7 @@ from django.core import serializers
 import json
 
 from api.models import FipeData, PriceHistory, SUIVRequest, SuivData, Vehicle
+from api.serializers import FipeDataSerializer, SuivDataSerializer, VehicleSerializer
 # Create your views here.
 class InformacoesVeiculoView(APIView):
     def get(self, request, *args, **kwargs):
@@ -22,10 +23,9 @@ class InformacoesVeiculoView(APIView):
         suiv_data_objects = None
         fipe_data_objects = None
         vehicle = Vehicle.objects.filter(plate=plate)
+        print("veiculo", vehicle)
         if vehicle:
             vehicle = vehicle[0]
-            suiv_data_objects = SuivData.objects.filter(fipe_id=vehicle.fipe_id)
-            fipe_data_objects = FipeData.objects.filter(fipe_id=vehicle.fipe_id)
         else:
             # Recupera dados da SUIV, caso não haja no banco de dados
             api_key = config('SUIV_API_KEY')
@@ -33,43 +33,46 @@ class InformacoesVeiculoView(APIView):
             url = f'https://api.suiv.com.br/{endpoint}?plate={plate}&key={api_key}'
             response = requests.get(url)
 
-            # Registra chamada à SUIV
-            register_suiv_request(endpoint)
-
             if not response.ok:
                 return Response({'error': 'Fail retrieving data'}, status=500)
 
+            print("Fez request à SUIV")
+            
+            # Registra chamada à SUIV
+            register_suiv_request(endpoint)
+
             # Salva dados no banco
             if response.status_code == 200:
+            # if True:
+                # data = None
+                # with open('data/prisma.json') as f:
+                #     data = json.load(f)
+                #     print("dados carregados")
                 data = response.json()
                 vehicle, suiv_data_objects, fipe_data_objects = save_suiv_data(data)
 
         json_data = generate_vehicle_info_json(vehicle, suiv_data_objects, fipe_data_objects)
 
-        return JsonResponse(json_data)
+        # json_data = json.dumps(data)
+
+        return JsonResponse(json_data, safe=False)
 
 def generate_vehicle_info_json(vehicle, fipe_data_objects, suiv_data_objects):
     # Serializa dados em JSON
-    vehicle_data = serializers.serialize('json', [vehicle])
-    fipe_data_collection = serializers.serialize('json', fipe_data_objects, \
-    use_natural_foreign_keys=True, relations={'price_history': {'use_natural_primary_keys': True}})
-    suiv_data_collection = serializers.serialize('json', suiv_data_objects)
-
-    # Convert JSON strings into Python dictionaries
-    vehicle_data = json.loads(vehicle_data)[0]['fields']
-    fipe_data_collection = json.loads(fipe_data_collection)
-    suiv_data_collection = json.loads(suiv_data_collection)
+    vehicle_data = VehicleSerializer(vehicle).data
+    fipe_data_collection = FipeDataSerializer(vehicle.fipe_data.all(), many=True).data
+    suiv_data_collection = SuivDataSerializer(vehicle.suiv_data.all(), many=True).data
 
     # Create the final JSON object
+    
     data = {
         **vehicle_data,
         "fipeDataCollection": fipe_data_collection,
-        "suivDataCollection": suiv_data_collection
+        "suivDataCollection": suiv_data_collection,
+        "suivRequestCount": len(SUIVRequest.objects.all())
     }
 
-    # 
-    json_data = json.dumps(data)
-    return json_data
+    return data
 
 def register_suiv_request(endpoint):
     SUIVRequest.objects.create(endpoint=endpoint)
@@ -79,21 +82,21 @@ def save_suiv_data(data):
     suiv_data_collection = data.get('suivDataCollection', [])
     vehicle_data = {k: v for k, v in data.items() if k not in ['fipeDataCollection', 'suivDataCollection']}
 
+    # Instancia veículo
+    vehicle = save_vehicle_data_object(vehicle_data)
+
     # Intancia objetos FipeData 
-    fipe_data_objects = save_fipe_data_objects(fipe_data_collection)
+    fipe_data_objects = save_fipe_data_objects(fipe_data_collection, vehicle)
 
     # Intancia objetos PriceHistory 
     save_price_history_data_objects(fipe_data_collection)
 
     # Intancia objetos SuivData
-    suiv_data_objects = save_suiv_data(suiv_data_collection)
-
-    # Instancia veículo
-    vehicle = save_vehicle_data_object(vehicle_data)
+    suiv_data_objects = save_suiv_data_objects(suiv_data_collection, vehicle)
 
     return (vehicle, suiv_data_objects, fipe_data_objects)
 
-def save_fipe_data_objects(fipe_data_collection):
+def save_fipe_data_objects(fipe_data_collection, vehicle):
     fipe_data_objects = []
     for fipe_data in fipe_data_collection:
         fd_kwargs = {
@@ -104,6 +107,7 @@ def save_fipe_data_objects(fipe_data_collection):
             'version_description': fipe_data['versionDescription'],
             'fuel': fipe_data['fuel'],
             'current_value': fipe_data['currentValue'],
+            'vehicle': vehicle
         }
         fipe_data_objects.append(FipeData(**fd_kwargs))
     return FipeData.objects.bulk_create(fipe_data_objects)
@@ -123,7 +127,7 @@ def save_price_history_data_objects(fipe_data_collection):
             price_history_objects.append(PriceHistory(**ph_kwargs))
     return PriceHistory.objects.bulk_create(price_history_objects)
 
-def save_suiv_data_objects(suiv_data_collection):
+def save_suiv_data_objects(suiv_data_collection, vehicle):
     suiv_data_objects = []
     for suiv_data in suiv_data_collection:
         sd_kwargs = {
@@ -134,6 +138,7 @@ def save_suiv_data_objects(suiv_data_collection):
             'model_description': suiv_data['modelDescription'],
             'maker_id': suiv_data['makerId'],
             'maker_description': suiv_data['makerDescription'],
+            'vehicle': vehicle
         }
         suiv_data_objects.append(SuivData(**sd_kwargs))
     return SuivData.objects.bulk_create(suiv_data_objects)
@@ -157,7 +162,12 @@ def save_vehicle_data_object(vehicle_data):
         'gear_box_number': vehicle_data['maximumTractionCapacity'],
         'back_axis_count': vehicle_data['backAxisCount'],
         'aux_axis_count': vehicle_data['auxAxisCount'],
-        'engine_number': vehicle_data['engineNumber']
+        'engine_number': vehicle_data['engineNumber'],
+        'maker': vehicle_data['maker'],
+        'maker_id': vehicle_data['makerId'],
+        'description': vehicle_data['description'],
+        'fipe_id': vehicle_data['fipeId'],
+        'seat_count': vehicle_data['seatCount']
     }
 
     vehicle = Vehicle(**vehicle_kwargs)
