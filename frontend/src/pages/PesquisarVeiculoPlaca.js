@@ -4,6 +4,8 @@ import axios from "axios";
 function PesquisarVeiculoPlaca() {
 
     const [vehicleData, setVehicleData] = useState({})
+    const [selectedModel, setSelectedModel] = useState({})
+    const [basicPack, setBasicPack] = useState({})
     const [formData, setFormData] = useState({
         placa: '',
     });
@@ -28,7 +30,24 @@ function PesquisarVeiculoPlaca() {
             .catch(error => {
                 console.error(error);
             });
+    };
 
+    const convertBrl = (value) => {
+        return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL'})
+    }
+
+    const recuperarPacoteBasico = (event) => {
+        event.preventDefault();
+        console.log("Recuperando pacote básico")
+        axios.get(`/api/PacoteBasico?fipeId=${selectedModel.fipe_id}&year=${selectedModel.year}`)
+            .then(response => {
+                console.log(response.data);
+                setBasicPack(response.data)
+                console.log(basicPack)
+            })
+            .catch(error => {
+                console.error(error);
+            });
     };
 
     return (
@@ -69,7 +88,7 @@ function PesquisarVeiculoPlaca() {
                                         <span className="font-bold">Modelo: </span>
                                         {vehicleData.fipe_id
                                             ? vehicleData.fipeDataCollection[vehicleData.fipe_id].model_description
-                                            : "Não Informado"}
+                                            : selectedModel.model_description}
                                     </li>
                                     <li className="mb-2">
                                         <span className="font-bold">Descrição: </span>
@@ -79,7 +98,7 @@ function PesquisarVeiculoPlaca() {
                                         <span className="font-bold">Montadora: </span>
                                         {vehicleData.fipe_id
                                             ? vehicleData.fipeDataCollection[vehicleData.fipe_id].maker_description
-                                            : "Não Informado"}
+                                            : selectedModel.maker_description}
                                     </li>
                                     <li className="mb-2">
                                         <span className="font-bold">Combustível: </span>
@@ -91,7 +110,7 @@ function PesquisarVeiculoPlaca() {
                                     </li>
                                     <li className="mb-2">
                                         <span className="font-bold">Código FIPE: </span>
-                                        {vehicleData.fipe_id ? vehicleData.fipe_id : "Não informado"}
+                                        {vehicleData.fipe_id ? vehicleData.fipe_id : selectedModel.fipe_id}
                                     </li>
                                 </ul>
                                 <ul>
@@ -121,18 +140,77 @@ function PesquisarVeiculoPlaca() {
                                     </li>
                                     <li className="mb-2">
                                         <span className="font-bold">Valor atual: </span>
-                                        {vehicleData.fipe_id ?
-                                            vehicleData.fipeDataCollection[vehicleData.fipe_id].current_value
-                                            : "Não Informado"}
+                                        {selectedModel && Object.keys(selectedModel).length > 0 ?
+                                            selectedModel.current_value.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})
+                                            : ''}
                                     </li>
                                     <li className="mb-2"><span className="font-bold">Versão: </span>
                                         {vehicleData.fipe_id ?
                                             vehicleData.fipeDataCollection[vehicleData.fipe_id].version_description
-                                            : "Não Informado"}
+                                            : selectedModel.version_description}
                                     </li>
                                 </ul>
                             </div>
                         </div>
+
+                        <h2 className="text-lg font-bold my-4">Selecione a versão do seu carro</h2>
+
+                        <div className="grid grid-cols-2 gap-4">
+                            {vehicleData.fipeDataCollection.map((model, index) => (
+                                <button
+                                    key={index}
+                                    className={`p-4 ${model === selectedModel ? "bg-blue-500 text-white" : "bg-white"
+                                        }`}
+                                    onClick={() => setSelectedModel(model)}
+                                >
+                                    {model.maker_description} {model.version_description} ({model.year})
+                                </button>
+                            ))}
+
+                            {/* <div className="col-span-2 p-4 bg-gray-100">
+                                <p>Selected car:</p>
+                                <p>
+                                    {selectedCar.maker_description} {selectedCar.model_description} ({selectedCar.year})
+                                </p>
+                                <p>Current value: R$ {selectedCar.current_value.toFixed(2)}</p>
+                            </div> */}
+                        </div>
+
+                        {Object.keys(selectedModel).length > 0 && (
+                            <div className="w-full flex justify-center">
+                                <button
+                                    type="submit"
+                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold 
+                                    py-2 px-4 rounded-md w-full md:w-1/2 m-4"
+                                    onClick={recuperarPacoteBasico}>
+                                    Exibir peças
+                                </button>
+                            </div>
+                        )}
+
+                        {basicPack.length > 0 && (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                            {basicPack.map((part) => (
+                                <div
+                                    key={part.id}
+                                    className="bg-white rounded-lg overflow-hidden shadow-lg"
+                                >
+                                    <div className="px-6 py-4">
+                                        <div className="font-bold text-xl mb-2">{part.nickname_description}</div>
+                                        <p className="text-gray-700 text-base">{part.complement}</p>
+                                        <p className="text-gray-700 text-base">{part.part_number}</p>
+                                    </div>
+                                    <div className="px-6 py-4">
+                                        {part.aftermarket_maker_description && (
+                                            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">{part.aftermarket_maker_description}</span>
+                                        ) }
+                                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">{part.is_genuine ? 'Genuine' : 'Aftermarket'}</span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        )}
+
                         <div className="p-2">
                             Número de Requisições à SUIV: {vehicleData.suivRequestCount}
                         </div>
