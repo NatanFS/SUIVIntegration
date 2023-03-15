@@ -34,11 +34,11 @@ function PesquisarVeiculoPlaca() {
     return (
         <div className="flex min-h-screen justify-center items-center">
             <div className="w-full p-4 lg:max-w-4xl xl:max-w-6xl">
-                <form className="flex flex-col md:flex-row md:mb-4" onSubmit={pesquisarPlaca}>
+                <form className="flex flex-col pb-2" onSubmit={pesquisarPlaca}>
                     <input
                         type="text"
                         placeholder="Digite a placa do veículo."
-                        className="border border-gray-400 py-2 px-4 rounded-l-md mb-2 md:mb-0 md:mr-2 w-full md:w-1/2"
+                        className="border border-gray-400 py-2 px-4 rounded-l-md mb-2 w-full"
                         id="placa"
                         name="placa"
                         value={formData.placa}
@@ -47,7 +47,7 @@ function PesquisarVeiculoPlaca() {
                     />
                     <button
                         type="submit"
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r-md w-full md:w-1/2"
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r-md w-full "
                     >
                         Pesquisar
                     </button>
