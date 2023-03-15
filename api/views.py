@@ -1,12 +1,8 @@
 from django.http import JsonResponse
-from django.shortcuts import render
 import requests
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from decouple import config
-from django.core import serializers
-import json
-
 from api.models import FipeData, PriceHistory, SUIVRequest, SuivData, Vehicle
 from api.serializers import FipeDataSerializer, SuivDataSerializer, VehicleSerializer
 # Create your views here.
@@ -20,8 +16,6 @@ class InformacoesVeiculoView(APIView):
         plate = plate.replace('-', '')
 
         # Procura dados no banco
-        suiv_data_objects = None
-        fipe_data_objects = None
         vehicle = Vehicle.objects.filter(plate=plate)
         print("veiculo", vehicle)
         if vehicle:
@@ -43,28 +37,18 @@ class InformacoesVeiculoView(APIView):
 
             # Salva dados no banco
             if response.status_code == 200:
-            # if True:
-                # data = None
-                # with open('data/prisma.json') as f:
-                #     data = json.load(f)
-                #     print("dados carregados")
                 data = response.json()
-                vehicle, suiv_data_objects, fipe_data_objects = save_suiv_data(data)
+                vehicle = save_suiv_data(data)
 
-        json_data = generate_vehicle_info_json(vehicle, suiv_data_objects, fipe_data_objects)
-
-        # json_data = json.dumps(data)
-
+        json_data = generate_vehicle_info_json(vehicle)
         return JsonResponse(json_data, safe=False)
 
-def generate_vehicle_info_json(vehicle, fipe_data_objects, suiv_data_objects):
+def generate_vehicle_info_json(vehicle):
     # Serializa dados em JSON
     vehicle_data = VehicleSerializer(vehicle).data
     fipe_data_collection = FipeDataSerializer(vehicle.fipe_data.all(), many=True).data
     suiv_data_collection = SuivDataSerializer(vehicle.suiv_data.all(), many=True).data
 
-    # Create the final JSON object
-    
     data = {
         **vehicle_data,
         "fipeDataCollection": fipe_data_collection,
@@ -86,15 +70,15 @@ def save_suiv_data(data):
     vehicle = save_vehicle_data_object(vehicle_data)
 
     # Intancia objetos FipeData 
-    fipe_data_objects = save_fipe_data_objects(fipe_data_collection, vehicle)
+    save_fipe_data_objects(fipe_data_collection, vehicle)
 
     # Intancia objetos PriceHistory 
     save_price_history_data_objects(fipe_data_collection)
 
     # Intancia objetos SuivData
-    suiv_data_objects = save_suiv_data_objects(suiv_data_collection, vehicle)
+    save_suiv_data_objects(suiv_data_collection, vehicle)
 
-    return (vehicle, suiv_data_objects, fipe_data_objects)
+    return vehicle
 
 def save_fipe_data_objects(fipe_data_collection, vehicle):
     fipe_data_objects = []
