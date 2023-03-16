@@ -4,14 +4,14 @@ import requests
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from decouple import config
-from api.models import Part, SummaryVehicle, TechnicalSpecsGroup, Vehicle
-from api.serializers import SummaryVehicleSerializer, TechnicalSpecsGroupSerializer
-from api.utils import generate_basic_pack_info, generate_vehicle_info_json, register_suiv_request, save_parts_data_object, save_suiv_data, save_summary_data_object, save_technical_specs_groups
+from api.models import Part, RevisionPlan, SummaryVehicle, TechnicalSpecsGroup, Vehicle
+from api.serializers import RevisionPlanSerializer, SummaryVehicleSerializer, TechnicalSpecsGroupSerializer
+from api.utils import generate_basic_pack_info, generate_vehicle_info_json, register_suiv_request, save_parts_data_object, save_revision_plans, save_suiv_data, save_summary_data_object, save_technical_specs_groups
 
 # Create your views here.
 class VehicleInfoView(APIView):
     def get(self, request, *args, **kwargs):
-        plate = request.GET.get('placa')
+        plate = request.GET.get('plate')
         if not plate:
             return Response({'error': 'Plate not informed'}, status=400)
 
@@ -102,7 +102,7 @@ class SummaryView(APIView):
         else:
             # Recupera dados da SUIV, caso não haja no banco de dados
             api_key = config('SUIV_API_KEY')
-            endpoint = '/api/v3/Summary/byfipe'
+            endpoint = 'api/v3/Summary/byfipe'
             url = f'https://api.suiv.com.br/{endpoint}?key={api_key}&fipeId={fipe_id}'
             response = requests.get(url)
 
@@ -138,7 +138,7 @@ class TechnicalSpecsByPlateView(APIView):
         if not technical_specs_groups:
             # Recupera dados da SUIV, caso não haja no banco de dados
             api_key = config('SUIV_API_KEY')
-            endpoint = '/api/v3/TechnicalSpecs/byplate'
+            endpoint = 'api/v3/TechnicalSpecs/byplate'
             url = f'https://api.suiv.com.br/{endpoint}?key={api_key}&plate={plate}'
             response = requests.get(url)
 
@@ -159,4 +159,44 @@ class TechnicalSpecsByPlateView(APIView):
                 technical_specs_groups = save_technical_specs_groups(data, plate)
 
         json_data = TechnicalSpecsGroupSerializer(technical_specs_groups, many=True).data
+        return JsonResponse(json_data, safe=False)
+
+class RevisionPlanView(APIView):
+    def get(self, request, *args, **kwargs):
+        version_id = request.GET.get('versionId')
+        year = request.GET.get('year')
+
+        if not version_id:
+            return Response({'error': 'versionId not informed'}, status=400)
+        if not year:
+            return Response({'error': 'year not informed'}, status=400)
+
+        # Procura dados no banco
+        revision_plans = RevisionPlan.objects.filter(version_id=version_id, year=year)
+
+        if not revision_plans:
+            # Recupera dados da SUIV, caso não haja no banco de dados
+            api_key = config('SUIV_API_KEY')
+            endpoint = 'api/v3/RevisionPlan'
+            url = f'https://api.suiv.com.br/{endpoint}?key={api_key}&versionId={version_id}&year={year}'
+            response = requests.get(url)
+
+            if not response.ok:
+                return Response({'error': 'Fail retrieving data'}, status=500)
+
+            print("Fez request à SUIV")
+            
+            # Registra chamada à SUIV
+            register_suiv_request(endpoint)
+
+            # Salva dados no banco
+            if response.status_code == 200:
+                data = response.json()
+                print("Salvando objetos")
+                print(data)
+
+                revision_plans = save_revision_plans(data, 
+                    version_id=version_id, year=year)
+
+        json_data = RevisionPlanSerializer(revision_plans, many=True).data
         return JsonResponse(json_data, safe=False)

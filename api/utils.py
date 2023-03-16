@@ -1,4 +1,4 @@
-from api.models import FipeData, Part, PriceHistory, SUIVRequest, SuivData, TechnicalSpecsGroup, Vehicle, SummaryVehicle
+from api.models import FipeData, Part, PriceHistory, RevisionPlan, SUIVRequest, SuivData, TechnicalSpecsGroup, Vehicle, SummaryVehicle
 from api.serializers import FipeDataSerializer, PartSerializer, SuivDataSerializer, VehicleSerializer
 
 
@@ -49,6 +49,23 @@ def save_technical_specs_groups(technical_specs_groups, plate):
         technical_specs_groups_objects.append(TechnicalSpecsGroup(**fd_kwargs))
     return TechnicalSpecsGroup.objects.bulk_create(technical_specs_groups_objects)
 
+def save_revision_plans(revision_plans, version_id, year):
+    revision_plans_objects = []
+    for revision_plan in revision_plans:
+        fd_kwargs = {
+            'version_id': version_id,
+            'year': year,
+            'kilometers': revision_plan['kilometers'],
+            'months': revision_plan['months'],
+            'parcels': revision_plan['parcels'],
+            'duration_minutes': revision_plan['durationMinutes'],
+            'full_price': revision_plan['fullPrice'],
+            'parcel_price': revision_plan['parcelPrice'],
+            'changed_parts': revision_plan['changedParts'],
+            'inspections': revision_plan['inspections'],
+        }
+        revision_plans_objects.append(RevisionPlan(**fd_kwargs))
+    return RevisionPlan.objects.bulk_create(revision_plans_objects)
 
 def save_parts_data_object(parts_data, year, fipeId):
     parts_objects = []

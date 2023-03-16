@@ -9,7 +9,7 @@ function PesquisarVeiculoPlaca() {
     const [basicPack, setBasicPack] = useState({})
     const [summary, setSummary] = useState()
     const [formData, setFormData] = useState({
-        placa: '',
+        plate: '',
     });
 
     const handleInputChange = (event) => {
@@ -75,9 +75,9 @@ function PesquisarVeiculoPlaca() {
                         type="text"
                         placeholder="Digite a placa do veículo."
                         className="border border-gray-400 py-2 px-4 rounded-l-md mb-2 md:mb-0 md:mr-2 w-full md:w-1/2"
-                        id="placa"
-                        name="placa"
-                        value={formData.placa}
+                        id="plate"
+                        name="plate"
+                        value={formData.plate}
                         onChange={handleInputChange}
                         required
                     />

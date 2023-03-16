@@ -6,4 +6,5 @@ urlpatterns = [
     path('BasicPack/', views.BasicPackView.as_view(), name='basic-pack'),  
     path('Summary/byfipe', views.SummaryView.as_view(), name='summary'),
     path('TechnicalSpecs/', views.TechnicalSpecsByPlateView.as_view(), name='tech-specs'), 
+    path('RevisionPlan/', views.RevisionPlanView.as_view(), name='revision-plans'), 
 ]
