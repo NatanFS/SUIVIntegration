@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import debounce from 'lodash/debounce';
+import RevisionPlan from "../components/RevisionPlan";
+import Equipments from "../components/Equipments";
 
 function PesquisarVeiculoPlaca() {
 
@@ -8,6 +10,8 @@ function PesquisarVeiculoPlaca() {
     const [selectedModel, setSelectedModel] = useState({})
     const [basicPack, setBasicPack] = useState({})
     const [techSpecs, setTechSpecs] = useState({})
+    const [revisionPlans, setRevisionPlans] = useState({})
+    const [equipments, setEquipments] = useState({})
     const [summary, setSummary] = useState()
     const [formData, setFormData] = useState({
         plate: '',
@@ -35,6 +39,31 @@ function PesquisarVeiculoPlaca() {
         axios.get(`/api/TechnicalSpecs?plate=${formData.plate}`)
             .then(response => {
                 setTechSpecs(response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+
+    const recuperarRevisionPlans = () => {
+        let fipeId = selectedModel.fipe_id
+        let versionId = vehicleData.suivDataCollection.find(suivData => suivData.fipe_id = fipeId).version_id
+        axios.get(`/api/RevisionPlan?versionId=${versionId}&year=${vehicleData.year_model}`)
+            .then(response => {
+                setRevisionPlans(response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+
+    const recuperarEquipments = () => {
+        let fipeId = selectedModel.fipe_id
+        let year = vehicleData.year_model
+
+        axios.get(`/api/Equipments?fipeId=${fipeId}&year=${year}`)
+            .then(response => {
+                setEquipments(response.data);
             })
             .catch(error => {
                 console.error(error);
@@ -75,13 +104,17 @@ function PesquisarVeiculoPlaca() {
     }, 1000), []);
 
     useEffect(() => {
-        recuperarResumo()
+        if (Object.keys(selectedModel).length > 0) {
+            recuperarResumo()
+        }
     }, [selectedModel])
 
     useEffect(() => {
-        recuperarEspecificacoesTecnicas()
+        if (Object.keys(vehicleData).length > 0) {
+            console.log(vehicleData.fipeDataCollection[0])
+            setSelectedModel(vehicleData.fipeDataCollection[0])
+        }
     }, [vehicleData])
-
     return (
         <div className="flex min-h-screen justify-center items-center">
             <div className="w-full p-4 lg:max-w-4xl xl:max-w-6xl">
@@ -210,26 +243,28 @@ function PesquisarVeiculoPlaca() {
                             ))}
                         </div>
 
-
-                        {techSpecs.length > 0 && (
-                            <div className="container mx-auto p-4">
-                                {techSpecs.map((item) => (
-                                    <div className="border border-gray-400 shadow rounded-md p-4 mb-4" key={item.id}>
-                                        <h2 className="font-bold text-lg mb-2">{item.description}</h2>
-                                        <ul>
-                                            {item.specs.map((spec) => (
-                                                <li key={spec.property} className="flex justify-between py-1">
-                                                    <span className="font-medium">{spec.property}:</span>
-                                                    <span>{spec.value}</span>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                ))}
+                        {Object.keys(selectedModel).length > 0 && (
+                            <div className="w-full flex justify-center">
+                                <button
+                                    type="submit"
+                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold 
+                                    py-2 px-4 rounded-md w-full m-4"
+                                    onClick={recuperarRevisionPlans}>
+                                    Exibir plano de revisão
+                                </button>
                             </div>
                         )}
 
-                        
+                        {revisionPlans.length > 0 && (
+                            <>
+                                {revisionPlans.map((revisionPlan) => (
+                                    <RevisionPlan revisionPlan={revisionPlan} />
+                                ))}
+                            </>
+
+                        )}
+
+
                         {Object.keys(selectedModel).length > 0 && (
                             <div className="w-full flex justify-center">
                                 <button
@@ -265,7 +300,53 @@ function PesquisarVeiculoPlaca() {
                             </div>
                         )}
 
-                        
+                        {Object.keys(selectedModel).length > 0 && (
+                            <div className="w-full flex justify-center">
+                                <button
+                                    type="submit"
+                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold 
+                                    py-2 px-4 rounded-md w-full m-4"
+                                    onClick={recuperarEspecificacoesTecnicas}>
+                                    Exibir especificações técnias
+                                </button>
+                            </div>
+                        )}
+
+
+                        {techSpecs.length > 0 && (
+                            <div className="container mx-auto p-4">
+                                {techSpecs.map((item) => (
+                                    <div className="border border-gray-400 shadow rounded-md p-4 mb-4" key={item.id}>
+                                        <h2 className="font-bold text-lg mb-2">{item.description}</h2>
+                                        <ul>
+                                            {item.specs.map((spec) => (
+                                                <li key={spec.property} className="flex justify-between py-1">
+                                                    <span className="font-medium">{spec.property}:</span>
+                                                    <span>{spec.value}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+
+                        {Object.keys(selectedModel).length > 0 && (
+                            <div className="w-full flex justify-center">
+                                <button
+                                    type="submit"
+                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold 
+                                    py-2 px-4 rounded-md w-full m-4"
+                                    onClick={recuperarEquipments}>
+                                    Exibir acessórios
+                                </button>
+                            </div>
+                        )}
+
+                        {equipments.length > 0 && (
+                            <Equipments equipments={equipments} />
+                        )}
 
 
                         <div className="p-2">
