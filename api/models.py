@@ -108,9 +108,9 @@ class SummaryVehicle(models.Model):
     version_id = models.IntegerField(null=True)
     maker_description = models.CharField(max_length=255, null=True)
     model_description = models.CharField(max_length=255, null=True)
-    text = models.CharField(max_length=255)
-    imageUrl = models.URLField()
-    makerLogoUrl = models.URLField()
+    text = models.TextField(null=True)
+    image_url = models.URLField(null=True)
+    maker_logo_url = models.URLField(null=True)
 
 class Recall(models.Model):
     vehicle = models.ForeignKey(Vehicle, verbose_name=("Recalls"), on_delete=models.CASCADE, related_name="recalls")

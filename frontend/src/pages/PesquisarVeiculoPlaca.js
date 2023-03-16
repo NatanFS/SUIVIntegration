@@ -7,6 +7,7 @@ function PesquisarVeiculoPlaca() {
     const [vehicleData, setVehicleData] = useState({})
     const [selectedModel, setSelectedModel] = useState({})
     const [basicPack, setBasicPack] = useState({})
+    const [summary, setSummary] = useState()
     const [formData, setFormData] = useState({
         placa: '',
     });
@@ -21,24 +22,40 @@ function PesquisarVeiculoPlaca() {
 
     const debouncedPesquisarPlaca = useCallback(debounce((formData) => {
         axios.get(`/api/VehicleInfo/byplate?placa=${formData.placa}`)
-          .then(response => {
-            setVehicleData(response.data);
-          })
-          .catch(error => {
-            console.error(error);
-          });
-      }, 1000), []);
-    
-      const debouncedRecuperarPacoteBasico = useCallback(debounce((selectedModel) => {
+            .then(response => {
+                setVehicleData(response.data);
+                setSelectedModel({})
+                setBasicPack({basicPack})
+                setSummary({})
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }, 1000), []);
+
+    const debouncedRecuperarPacoteBasico = useCallback(debounce((selectedModel) => {
         axios.get(`/api/BasicPack?fipeId=${selectedModel.fipe_id}&year=${selectedModel.year}`)
-          .then(response => {
-            setBasicPack(response.data);
-          })
-          .catch(error => {
-            console.error(error);
-          });
-      }, 1000), []);
-    
+            .then(response => {
+                setBasicPack(response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }, 1000), []);
+
+    useEffect(() => {
+        recuperarResumo()
+    }, [selectedModel])
+
+    const recuperarResumo = () => {
+        axios.get(`/api/Summary/byfipe?fipeId=${selectedModel.fipe_id}`)
+            .then(response => {
+                setSummary(response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
 
     const pesquisarPlaca = (event) => {
         event.preventDefault();
@@ -71,6 +88,16 @@ function PesquisarVeiculoPlaca() {
                         Pesquisar
                     </button>
                 </form>
+
+                {summary && (
+                    <div className="mx-auto rounded-md shadow-md overflow-hidden justify-center m-2">
+                        <img className="mx-auto max-w-md w-full" src={summary.image_url} alt="Vehicle" />
+                        <div className="flex justify-center items-center gap-8 p-4">
+                            <div dangerouslySetInnerHTML={{ __html: summary.text }} />
+                            <img className="w-24 mt-4" src={summary.maker_logo_url} alt="Maker Logo" />
+                        </div>
+                    </div>
+                )}
 
                 {vehicleData && vehicleData.fipeDataCollection && vehicleData.suivDataCollection && (
                     <>
@@ -141,7 +168,7 @@ function PesquisarVeiculoPlaca() {
                                     <li className="mb-2">
                                         <span className="font-bold">Valor atual: </span>
                                         {selectedModel && Object.keys(selectedModel).length > 0 ?
-                                            selectedModel.current_value.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})
+                                            selectedModel.current_value.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
                                             : ''}
                                     </li>
                                     <li className="mb-2"><span className="font-bold">Versão: </span>
@@ -153,7 +180,7 @@ function PesquisarVeiculoPlaca() {
                             </div>
                         </div>
 
-                        <h2 className="text-lg font-bold my-4">Selecione a versão do seu carro</h2>
+                        <h2 className="text-lg font-bold my-4">Selecione a versão do seu veículo</h2>
 
                         <div className="grid grid-cols-2 gap-4">
                             {vehicleData.fipeDataCollection.map((model, index) => (
@@ -190,25 +217,25 @@ function PesquisarVeiculoPlaca() {
 
                         {basicPack.length > 0 && (
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                            {basicPack.map((part) => (
-                                <div
-                                    key={part.id}
-                                    className="bg-white rounded-lg overflow-hidden shadow-lg"
-                                >
-                                    <div className="px-6 py-4">
-                                        <div className="font-bold text-xl mb-2">{part.nickname_description}</div>
-                                        <p className="text-gray-700 text-base">{part.complement}</p>
-                                        <p className="text-gray-700 text-base">{part.part_number}</p>
+                                {basicPack.map((part) => (
+                                    <div
+                                        key={part.id}
+                                        className="bg-white rounded-lg overflow-hidden shadow-lg"
+                                    >
+                                        <div className="px-6 py-4">
+                                            <div className="font-bold text-xl mb-2">{part.nickname_description}</div>
+                                            <p className="text-gray-700 text-base">{part.complement}</p>
+                                            <p className="text-gray-700 text-base">{part.part_number}</p>
+                                        </div>
+                                        <div className="px-6 py-4">
+                                            {part.aftermarket_maker_description && (
+                                                <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">{part.aftermarket_maker_description}</span>
+                                            )}
+                                            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">{part.is_genuine ? 'Genuine' : 'Aftermarket'}</span>
+                                        </div>
                                     </div>
-                                    <div className="px-6 py-4">
-                                        {part.aftermarket_maker_description && (
-                                            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">{part.aftermarket_maker_description}</span>
-                                        ) }
-                                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">{part.is_genuine ? 'Genuine' : 'Aftermarket'}</span>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                                ))}
+                            </div>
                         )}
 
                         <div className="p-2">

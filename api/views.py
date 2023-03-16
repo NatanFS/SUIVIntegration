@@ -81,6 +81,8 @@ class BasicPackView(APIView):
                 print(data)
 
                 parts = save_parts_data_object(data, year, fipe_id)
+                if not parts:
+                    parts = [Part.objects.create(year=year, fipe_id=fipe_id)]
 
         json_data = generate_basic_pack_info(parts)
         return JsonResponse(json_data, safe=False)
@@ -120,6 +122,6 @@ class SummaryView(APIView):
 
                 summary = save_summary_data_object(data, fipe_id)
 
-        json_data = SummaryVehicleSerializer(data=summary).data
+        json_data = SummaryVehicleSerializer(summary).data
         return JsonResponse(json_data, safe=False)
 
