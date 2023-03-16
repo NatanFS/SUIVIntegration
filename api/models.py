@@ -103,7 +103,7 @@ class RevisionPlan(models.Model):
         null=True,
     )
 
-class VehicleSummary(models.Model):
+class SummaryVehicle(models.Model):
     fipe_id = models.IntegerField(null=True)
     version_id = models.IntegerField(null=True)
     maker_description = models.CharField(max_length=255, null=True)

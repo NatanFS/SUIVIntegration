@@ -20,7 +20,7 @@ function PesquisarVeiculoPlaca() {
     };
 
     const debouncedPesquisarPlaca = useCallback(debounce((formData) => {
-        axios.get(`/api/InformacoesVeiculo/porplaca?placa=${formData.placa}`)
+        axios.get(`/api/VehicleInfo/byplate?placa=${formData.placa}`)
           .then(response => {
             setVehicleData(response.data);
           })
@@ -30,7 +30,7 @@ function PesquisarVeiculoPlaca() {
       }, 1000), []);
     
       const debouncedRecuperarPacoteBasico = useCallback(debounce((selectedModel) => {
-        axios.get(`/api/PacoteBasico?fipeId=${selectedModel.fipe_id}&year=${selectedModel.year}`)
+        axios.get(`/api/BasicPack?fipeId=${selectedModel.fipe_id}&year=${selectedModel.year}`)
           .then(response => {
             setBasicPack(response.data);
           })

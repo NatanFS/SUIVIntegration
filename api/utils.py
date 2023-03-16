@@ -1,4 +1,4 @@
-from api.models import FipeData, Part, PriceHistory, SUIVRequest, SuivData, Vehicle
+from api.models import FipeData, Part, PriceHistory, SUIVRequest, SuivData, Vehicle, VehicleSummary
 from api.serializers import FipeDataSerializer, PartSerializer, SuivDataSerializer, VehicleSerializer
 
 def generate_vehicle_info_json(vehicle):
@@ -21,6 +21,15 @@ def generate_basic_pack_info(parts):
 
 def register_suiv_request(endpoint):
     SUIVRequest.objects.create(endpoint=endpoint)
+
+def save_summary_data_object(summary, year, fipeId):
+    fd_kwargs = {
+        'fipe_id': fipeId,
+        'text': summary['text'],
+        'imageUrl': summary['imageUrl'],
+        'makerLogoUrl': summary['makerLogoUrl'],
+    }
+    return VehicleSummary.objects.create(**fd_kwargs)
 
 def save_parts_data_object(parts_data, year, fipeId):
     parts_objects = []

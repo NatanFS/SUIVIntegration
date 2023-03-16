@@ -4,4 +4,6 @@ from . import views
 urlpatterns = [
     path('VehicleInfo/byplate', views.VehicleInfoView.as_view(), name='vehicle-info'),  
     path('BasicPack/', views.BasicPackView.as_view(), name='basic-pack'),  
+    path('Summary/byfipe', views.SummaryView.as_view(), name='summary'),  
+
 ]
