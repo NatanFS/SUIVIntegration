@@ -143,7 +143,7 @@ class Equipment(models.Model):
     fipe_id = models.IntegerField(null=True)
     year = models.PositiveIntegerField(null=True)
     description = models.CharField(max_length=255, null=True)
-
+    is_series = models.BooleanField(null=True)
 
 class ComparisonData(models.Model):
     vehicle = models.OneToOneField(Vehicle, on_delete=models.CASCADE)

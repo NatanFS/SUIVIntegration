@@ -1,4 +1,4 @@
-from api.models import FipeData, Part, PriceHistory, RevisionPlan, SUIVRequest, SuivData, TechnicalSpecsGroup, Vehicle, SummaryVehicle
+from api.models import Equipment, FipeData, Part, PriceHistory, RevisionPlan, SUIVRequest, SuivData, TechnicalSpecsGroup, Vehicle, SummaryVehicle
 from api.serializers import FipeDataSerializer, PartSerializer, SuivDataSerializer, VehicleSerializer
 
 
@@ -66,6 +66,18 @@ def save_revision_plans(revision_plans, version_id, year):
         }
         revision_plans_objects.append(RevisionPlan(**fd_kwargs))
     return RevisionPlan.objects.bulk_create(revision_plans_objects)
+
+def save_equipments(equipments, fipe_id, year):
+    equipments_objects = []
+    for equipment in equipments:
+        fd_kwargs = {
+            'fipe_id': fipe_id,
+            'year': year,
+            'description': equipment['description'],
+            'is_series': equipment['isSeries'],
+        }
+        equipments_objects.append(Equipment(**fd_kwargs))
+    return Equipment.objects.bulk_create(equipments_objects)
 
 def save_parts_data_object(parts_data, year, fipeId):
     parts_objects = []

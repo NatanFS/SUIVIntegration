@@ -1,5 +1,10 @@
 from rest_framework import serializers
-from .models import FipeData, Part, PriceHistory, RevisionPlan, SuivData, SummaryVehicle, TechnicalSpecsGroup, Vehicle
+from .models import Equipment, FipeData, Part, PriceHistory, RevisionPlan, SuivData, SummaryVehicle, TechnicalSpecsGroup, Vehicle
+
+class EquipmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Equipment
+        fields = '__all__'
 
 class RevisionPlanSerializer(serializers.ModelSerializer):
     class Meta:

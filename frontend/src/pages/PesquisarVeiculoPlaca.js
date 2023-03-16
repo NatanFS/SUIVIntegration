@@ -21,7 +21,7 @@ function PesquisarVeiculoPlaca() {
     };
 
     const debouncedPesquisarPlaca = useCallback(debounce((formData) => {
-        axios.get(`/api/VehicleInfo/byplate?placa=${formData.placa}`)
+        axios.get(`/api/VehicleInfo/byplate?plate=${formData.plate}`)
             .then(response => {
                 setVehicleData(response.data);
                 setSelectedModel({})
