@@ -7,6 +7,7 @@ function PesquisarVeiculoPlaca() {
     const [vehicleData, setVehicleData] = useState({})
     const [selectedModel, setSelectedModel] = useState({})
     const [basicPack, setBasicPack] = useState({})
+    const [techSpecs, setTechSpecs] = useState({})
     const [summary, setSummary] = useState()
     const [formData, setFormData] = useState({
         plate: '',
@@ -20,12 +21,42 @@ function PesquisarVeiculoPlaca() {
         }));
     };
 
+    const recuperarResumo = () => {
+        axios.get(`/api/Summary/byfipe?fipeId=${selectedModel.fipe_id}`)
+            .then(response => {
+                setSummary(response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+
+    const recuperarEspecificacoesTecnicas = () => {
+        axios.get(`/api/TechnicalSpecs?plate=${formData.plate}`)
+            .then(response => {
+                setTechSpecs(response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+
+    const pesquisarPlaca = (event) => {
+        event.preventDefault();
+        debouncedPesquisarPlaca(formData)
+    };
+
+    const recuperarPacoteBasico = (event) => {
+        event.preventDefault();
+        debouncedRecuperarPacoteBasico(selectedModel)
+    };
+
     const debouncedPesquisarPlaca = useCallback(debounce((formData) => {
         axios.get(`/api/VehicleInfo/byplate?plate=${formData.plate}`)
             .then(response => {
                 setVehicleData(response.data);
                 setSelectedModel({})
-                setBasicPack({basicPack})
+                setBasicPack({ basicPack })
                 setSummary({})
             })
             .catch(error => {
@@ -47,25 +78,9 @@ function PesquisarVeiculoPlaca() {
         recuperarResumo()
     }, [selectedModel])
 
-    const recuperarResumo = () => {
-        axios.get(`/api/Summary/byfipe?fipeId=${selectedModel.fipe_id}`)
-            .then(response => {
-                setSummary(response.data);
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }
-
-    const pesquisarPlaca = (event) => {
-        event.preventDefault();
-        debouncedPesquisarPlaca(formData)
-    };
-
-    const recuperarPacoteBasico = (event) => {
-        event.preventDefault();
-        debouncedRecuperarPacoteBasico(selectedModel)
-    };
+    useEffect(() => {
+        recuperarEspecificacoesTecnicas()
+    }, [vehicleData])
 
     return (
         <div className="flex min-h-screen justify-center items-center">
@@ -193,22 +208,34 @@ function PesquisarVeiculoPlaca() {
                                     {model.maker_description} {model.version_description} ({model.year})
                                 </button>
                             ))}
-
-                            {/* <div className="col-span-2 p-4 bg-gray-100">
-                                <p>Selected car:</p>
-                                <p>
-                                    {selectedCar.maker_description} {selectedCar.model_description} ({selectedCar.year})
-                                </p>
-                                <p>Current value: R$ {selectedCar.current_value.toFixed(2)}</p>
-                            </div> */}
                         </div>
 
+
+                        {techSpecs.length > 0 && (
+                            <div className="container mx-auto p-4">
+                                {techSpecs.map((item) => (
+                                    <div className="border border-gray-400 shadow rounded-md p-4 mb-4" key={item.id}>
+                                        <h2 className="font-bold text-lg mb-2">{item.description}</h2>
+                                        <ul>
+                                            {item.specs.map((spec) => (
+                                                <li key={spec.property} className="flex justify-between py-1">
+                                                    <span className="font-medium">{spec.property}:</span>
+                                                    <span>{spec.value}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        
                         {Object.keys(selectedModel).length > 0 && (
                             <div className="w-full flex justify-center">
                                 <button
                                     type="submit"
                                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold 
-                                    py-2 px-4 rounded-md w-full md:w-1/2 m-4"
+                                    py-2 px-4 rounded-md w-full m-4"
                                     onClick={recuperarPacoteBasico}>
                                     Exibir peças
                                 </button>
@@ -237,6 +264,9 @@ function PesquisarVeiculoPlaca() {
                                 ))}
                             </div>
                         )}
+
+                        
+
 
                         <div className="p-2">
                             Número de Requisições à SUIV: {vehicleData.suivRequestCount}
