@@ -8,7 +8,7 @@ from api.models import Part, Vehicle
 from api.utils import generate_basic_pack_info, generate_vehicle_info_json, register_suiv_request, save_parts_data_object, save_suiv_data
 
 # Create your views here.
-class InformacoesVeiculoView(APIView):
+class VehicleInfoView(APIView):
     def get(self, request, *args, **kwargs):
         plate = request.GET.get('placa')
         if not plate:
@@ -45,7 +45,7 @@ class InformacoesVeiculoView(APIView):
         json_data = generate_vehicle_info_json(vehicle)
         return JsonResponse(json_data, safe=False)
 
-class PacoteBasicoView(APIView):
+class BasicPackView(APIView):
     def get(self, request, *args, **kwargs):
         year = request.GET.get('year')
         fipe_id = request.GET.get('fipeId')
@@ -83,4 +83,3 @@ class PacoteBasicoView(APIView):
 
         json_data = generate_basic_pack_info(parts)
         return JsonResponse(json_data, safe=False)
-
