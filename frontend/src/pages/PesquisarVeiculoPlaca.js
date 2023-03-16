@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
+import debounce from 'lodash/debounce';
 
 function PesquisarVeiculoPlaca() {
 
@@ -18,36 +19,35 @@ function PesquisarVeiculoPlaca() {
         }));
     };
 
+    const debouncedPesquisarPlaca = useCallback(debounce((formData) => {
+        axios.get(`/api/InformacoesVeiculo/porplaca?placa=${formData.placa}`)
+          .then(response => {
+            setVehicleData(response.data);
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      }, 1000), []);
+    
+      const debouncedRecuperarPacoteBasico = useCallback(debounce((selectedModel) => {
+        axios.get(`/api/PacoteBasico?fipeId=${selectedModel.fipe_id}&year=${selectedModel.year}`)
+          .then(response => {
+            setBasicPack(response.data);
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      }, 1000), []);
+    
+
     const pesquisarPlaca = (event) => {
         event.preventDefault();
-        console.log("placa pesquisada")
-        axios.get(`/api/InformacoesVeiculo/porplaca?placa=${formData.placa}`)
-            .then(response => {
-                console.log(response.data);
-                setVehicleData(response.data)
-                console.log(vehicleData)
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        debouncedPesquisarPlaca(formData)
     };
-
-    const convertBrl = (value) => {
-        return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL'})
-    }
 
     const recuperarPacoteBasico = (event) => {
         event.preventDefault();
-        console.log("Recuperando pacote básico")
-        axios.get(`/api/PacoteBasico?fipeId=${selectedModel.fipe_id}&year=${selectedModel.year}`)
-            .then(response => {
-                console.log(response.data);
-                setBasicPack(response.data)
-                console.log(basicPack)
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        debouncedRecuperarPacoteBasico(selectedModel)
     };
 
     return (
