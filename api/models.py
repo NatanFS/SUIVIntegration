@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 
+
 class Vehicle(models.Model):
     maker = models.CharField(max_length=255, null=True)
     maker_id = models.IntegerField(null=True)
@@ -27,8 +28,10 @@ class Vehicle(models.Model):
     aux_axis_count = models.CharField(max_length=255, null=True)
     engine_number = models.CharField(max_length=255, null=True)
 
+
 class FipeData(models.Model):
-    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='fipe_data')
+    vehicle = models.ForeignKey(
+        Vehicle, on_delete=models.CASCADE, related_name='fipe_data')
     year = models.IntegerField(null=True)
     fipe_id = models.IntegerField(null=True)
     maker_description = models.CharField(max_length=255, null=True)
@@ -37,15 +40,19 @@ class FipeData(models.Model):
     fuel = models.CharField(max_length=255, null=True)
     current_value = models.FloatField(null=True)
 
+
 class PriceHistory(models.Model):
-    fipe_data = models.ForeignKey(FipeData, on_delete=models.CASCADE, related_name='price_history')
+    fipe_data = models.ForeignKey(
+        FipeData, on_delete=models.CASCADE, related_name='price_history')
     month_update = models.IntegerField(null=True)
     year_update = models.IntegerField(null=True)
     value = models.FloatField(null=True)
     is_prediction = models.BooleanField(null=True)
 
+
 class SuivData(models.Model):
-    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='suiv_data')
+    vehicle = models.ForeignKey(
+        Vehicle, on_delete=models.CASCADE, related_name='suiv_data')
     fipe_id = models.IntegerField(null=True)
     version_id = models.IntegerField(null=True)
     version_description = models.CharField(max_length=255, null=True)
@@ -53,6 +60,7 @@ class SuivData(models.Model):
     model_description = models.CharField(max_length=255, null=True)
     maker_id = models.IntegerField(null=True)
     maker_description = models.CharField(max_length=255, null=True)
+
 
 class Part(models.Model):
     year = models.IntegerField(null=True)
@@ -65,18 +73,23 @@ class Part(models.Model):
     value = models.FloatField(null=True)
     aftermarket_maker_description = models.CharField(max_length=255, null=True)
 
-class TechnicalSpecsVehicle(models.Model):
-    year = models.PositiveIntegerField(null=True)
+
+class TechnicalSpecsGroup(models.Model):
+    plate = models.CharField(max_length=7, null=True)
     fipe_id = models.IntegerField(null=True)
+    year = models.PositiveIntegerField(null=True)
     description = models.CharField(max_length=255)
     specs = ArrayField(
         models.JSONField(
             default=dict,
             blank=True,
+            null=True
         ),
         default=list,
         blank=True,
+        null=True
     )
+
 
 class RevisionPlan(models.Model):
     year = models.IntegerField(null=True)
@@ -103,6 +116,7 @@ class RevisionPlan(models.Model):
         null=True,
     )
 
+
 class SummaryVehicle(models.Model):
     fipe_id = models.IntegerField(null=True)
     version_id = models.IntegerField(null=True)
@@ -112,26 +126,30 @@ class SummaryVehicle(models.Model):
     image_url = models.URLField(null=True)
     maker_logo_url = models.URLField(null=True)
 
+
 class Recall(models.Model):
-    vehicle = models.ForeignKey(Vehicle, verbose_name=("Recalls"), on_delete=models.CASCADE, related_name="recalls")
+    vehicle = models.ForeignKey(Vehicle, verbose_name=(
+        "Recalls"), on_delete=models.CASCADE, related_name="recalls")
     description = models.CharField(max_length=255)
+
 
 class IPVA(models.Model):
     base_fipe_value = models.FloatField(null=True)
     state = models.CharField(max_length=50)
     value = models.FloatField(null=True)
 
+
 class Equipment(models.Model):
     fipe_id = models.IntegerField(null=True)
     year = models.PositiveIntegerField(null=True)
     description = models.CharField(max_length=255, null=True)
 
+
 class ComparisonData(models.Model):
     vehicle = models.OneToOneField(Vehicle, on_delete=models.CASCADE)
     data = models.JSONField(null=True)
 
+
 class SUIVRequest(models.Model):
     endpoint = models.CharField(max_length=255, null=True)
     date = models.DateTimeField(auto_now_add=True)
-
-

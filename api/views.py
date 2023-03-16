@@ -4,9 +4,9 @@ import requests
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from decouple import config
-from api.models import Part, SummaryVehicle, Vehicle
-from api.serializers import SummaryVehicleSerializer
-from api.utils import generate_basic_pack_info, generate_vehicle_info_json, register_suiv_request, save_parts_data_object, save_suiv_data, save_summary_data_object
+from api.models import Part, SummaryVehicle, TechnicalSpecsGroup, Vehicle
+from api.serializers import SummaryVehicleSerializer, TechnicalSpecsGroupSerializer
+from api.utils import generate_basic_pack_info, generate_vehicle_info_json, register_suiv_request, save_parts_data_object, save_suiv_data, save_summary_data_object, save_technical_specs_groups
 
 # Create your views here.
 class VehicleInfoView(APIView):
@@ -125,3 +125,38 @@ class SummaryView(APIView):
         json_data = SummaryVehicleSerializer(summary).data
         return JsonResponse(json_data, safe=False)
 
+class TechnicalSpecsByPlateView(APIView):
+    def get(self, request, *args, **kwargs):
+        plate = request.GET.get('plate')
+
+        if not plate:
+            return Response({'error': 'Plate not informed'}, status=400)
+
+        # Procura dados no banco
+        technical_specs_groups = TechnicalSpecsGroup.objects.filter(plate=plate)
+
+        if not technical_specs_groups:
+            # Recupera dados da SUIV, caso não haja no banco de dados
+            api_key = config('SUIV_API_KEY')
+            endpoint = '/api/v3/TechnicalSpecs/byplate'
+            url = f'https://api.suiv.com.br/{endpoint}?key={api_key}&plate={plate}'
+            response = requests.get(url)
+
+            if not response.ok:
+                return Response({'error': 'Fail retrieving data'}, status=500)
+
+            print("Fez request à SUIV")
+            
+            # Registra chamada à SUIV
+            register_suiv_request(endpoint)
+
+            # Salva dados no banco
+            if response.status_code == 200:
+                data = response.json()
+                print("Salvando objetos")
+                print(data)
+
+                technical_specs_groups = save_technical_specs_groups(data, plate)
+
+        json_data = TechnicalSpecsGroupSerializer(technical_specs_groups, many=True).data
+        return JsonResponse(json_data, safe=False)

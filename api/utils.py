@@ -1,11 +1,14 @@
-from api.models import FipeData, Part, PriceHistory, SUIVRequest, SuivData, Vehicle, SummaryVehicle
+from api.models import FipeData, Part, PriceHistory, SUIVRequest, SuivData, TechnicalSpecsGroup, Vehicle, SummaryVehicle
 from api.serializers import FipeDataSerializer, PartSerializer, SuivDataSerializer, VehicleSerializer
+
 
 def generate_vehicle_info_json(vehicle):
     # Serializa dados em JSON
     vehicle_data = VehicleSerializer(vehicle).data
-    fipe_data_collection = FipeDataSerializer(vehicle.fipe_data.all(), many=True).data
-    suiv_data_collection = SuivDataSerializer(vehicle.suiv_data.all(), many=True).data
+    fipe_data_collection = FipeDataSerializer(
+        vehicle.fipe_data.all(), many=True).data
+    suiv_data_collection = SuivDataSerializer(
+        vehicle.suiv_data.all(), many=True).data
 
     data = {
         **vehicle_data,
@@ -16,20 +19,36 @@ def generate_vehicle_info_json(vehicle):
 
     return data
 
+
 def generate_basic_pack_info(parts):
     return PartSerializer(parts, many=True).data
+
 
 def register_suiv_request(endpoint):
     SUIVRequest.objects.create(endpoint=endpoint)
 
-def save_summary_data_object(summary, fipeId):
+
+def save_summary_data_object(summary, fipe_id):
     fd_kwargs = {
-        'fipe_id': fipeId,
+        'fipe_id': fipe_id,
         'text': summary['text'],
         'image_url': summary['imageUrl'],
         'maker_logo_url': summary['makerLogoUrl'],
     }
     return SummaryVehicle.objects.create(**fd_kwargs)
+
+
+def save_technical_specs_groups(technical_specs_groups, plate):
+    technical_specs_groups_objects = []
+    for technical_specs_group in technical_specs_groups:
+        fd_kwargs = {
+            'plate': plate,
+            'description': technical_specs_group['description'],
+            'specs': technical_specs_group['specs'],
+        }
+        technical_specs_groups_objects.append(TechnicalSpecsGroup(**fd_kwargs))
+    return TechnicalSpecsGroup.objects.bulk_create(technical_specs_groups_objects)
+
 
 def save_parts_data_object(parts_data, year, fipeId):
     parts_objects = []
@@ -48,24 +67,27 @@ def save_parts_data_object(parts_data, year, fipeId):
         parts_objects.append(Part(**fd_kwargs))
     return Part.objects.bulk_create(parts_objects)
 
+
 def save_suiv_data(data):
     fipe_data_collection = data.get('fipeDataCollection', [])
     suiv_data_collection = data.get('suivDataCollection', [])
-    vehicle_data = {k: v for k, v in data.items() if k not in ['fipeDataCollection', 'suivDataCollection']}
+    vehicle_data = {k: v for k, v in data.items() if k not in [
+        'fipeDataCollection', 'suivDataCollection']}
 
     # Instancia veículo
     vehicle = save_vehicle_data_object(vehicle_data)
 
-    # Intancia objetos FipeData 
+    # Intancia objetos FipeData
     save_fipe_data_objects(fipe_data_collection, vehicle)
 
-    # Intancia objetos PriceHistory 
+    # Intancia objetos PriceHistory
     save_price_history_data_objects(fipe_data_collection)
 
     # Intancia objetos SuivData
     save_suiv_data_objects(suiv_data_collection, vehicle)
 
     return vehicle
+
 
 def save_fipe_data_objects(fipe_data_collection, vehicle):
     fipe_data_objects = []
@@ -83,6 +105,7 @@ def save_fipe_data_objects(fipe_data_collection, vehicle):
         fipe_data_objects.append(FipeData(**fd_kwargs))
     return FipeData.objects.bulk_create(fipe_data_objects)
 
+
 def save_price_history_data_objects(fipe_data_collection):
     price_history_objects = []
     for fipe_data in fipe_data_collection:
@@ -97,6 +120,7 @@ def save_price_history_data_objects(fipe_data_collection):
             }
             price_history_objects.append(PriceHistory(**ph_kwargs))
     return PriceHistory.objects.bulk_create(price_history_objects)
+
 
 def save_suiv_data_objects(suiv_data_collection, vehicle):
     suiv_data_objects = []
