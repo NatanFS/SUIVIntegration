@@ -153,3 +153,5 @@ class ComparisonData(models.Model):
 class SUIVRequest(models.Model):
     endpoint = models.CharField(max_length=255, null=True)
     date = models.DateTimeField(auto_now_add=True)
+    inputs = models.JSONField(default=dict, blank=True)
+

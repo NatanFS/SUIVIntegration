@@ -24,8 +24,8 @@ def generate_basic_pack_info(parts):
     return PartSerializer(parts, many=True).data
 
 
-def register_suiv_request(endpoint):
-    SUIVRequest.objects.create(endpoint=endpoint)
+def register_suiv_request(endpoint, inputs):
+    SUIVRequest.objects.create(endpoint=endpoint, inputs=inputs)
 
 
 def save_summary_data_object(summary, fipe_id):
