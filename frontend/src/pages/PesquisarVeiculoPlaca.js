@@ -46,28 +46,11 @@ function PesquisarVeiculoPlaca() {
     }
 
     const recuperarRevisionPlans = () => {
-        let fipeId = selectedModel.fipe_id
-        let versionId = vehicleData.suivDataCollection.find(suivData => suivData.fipe_id = fipeId).version_id
-        axios.get(`/api/RevisionPlan?versionId=${versionId}&year=${vehicleData.year_model}`)
-            .then(response => {
-                setRevisionPlans(response.data);
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        debouncedRevisionPlans(selectedModel, vehicleData)
     }
 
-    const recuperarEquipments = () => {
-        let fipeId = selectedModel.fipe_id
-        let year = vehicleData.year_model
-
-        axios.get(`/api/Equipments?fipeId=${fipeId}&year=${year}`)
-            .then(response => {
-                setEquipments(response.data);
-            })
-            .catch(error => {
-                console.error(error);
-            });
+    const recuperarAcessorios = () => {
+        debouncedRecuperarAcessorios(selectedModel, vehicleData)
     }
 
     const pesquisarPlaca = (event) => {
@@ -79,6 +62,31 @@ function PesquisarVeiculoPlaca() {
         event.preventDefault();
         debouncedRecuperarPacoteBasico(selectedModel)
     };
+
+    const debouncedRevisionPlans = useCallback(debounce((selectedModel, vehicleData) => {
+        let fipeId = selectedModel.fipe_id
+        let versionId = vehicleData.suivDataCollection.find(suivData => suivData.fipe_id = fipeId).version_id
+        axios.get(`/api/RevisionPlan?versionId=${versionId}&year=${vehicleData.year_model}`)
+            .then(response => {
+                setRevisionPlans(response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }, 1000), []);
+
+    const debouncedRecuperarAcessorios = useCallback(debounce((selectedModel, vehicleData) => {
+        let fipeId = selectedModel.fipe_id
+        let year = vehicleData.year_model
+
+        axios.get(`/api/Equipments?fipeId=${fipeId}&year=${year}`)
+            .then(response => {
+                setEquipments(response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }, 1000), []);
 
     const debouncedPesquisarPlaca = useCallback(debounce((formData) => {
         axios.get(`/api/VehicleInfo/byplate?plate=${formData.plate}`)
@@ -307,7 +315,7 @@ function PesquisarVeiculoPlaca() {
                                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold 
                                     py-2 px-4 rounded-md w-full m-4"
                                     onClick={recuperarEspecificacoesTecnicas}>
-                                    Exibir especificações técnias
+                                    Exibir especificações técnicas
                                 </button>
                             </div>
                         )}
@@ -338,7 +346,7 @@ function PesquisarVeiculoPlaca() {
                                     type="submit"
                                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold 
                                     py-2 px-4 rounded-md w-full m-4"
-                                    onClick={recuperarEquipments}>
+                                    onClick={recuperarAcessorios}>
                                     Exibir acessórios
                                 </button>
                             </div>
