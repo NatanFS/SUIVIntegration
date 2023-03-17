@@ -14,7 +14,6 @@ def generate_vehicle_info_json(vehicle):
         **vehicle_data,
         "fipeDataCollection": fipe_data_collection,
         "suivDataCollection": suiv_data_collection,
-        "suivRequestCount": len(SUIVRequest.objects.all())
     }
 
     return data
@@ -110,7 +109,7 @@ def save_suiv_data(data):
     save_fipe_data_objects(fipe_data_collection, vehicle)
 
     # Intancia objetos PriceHistory
-    save_price_history_data_objects(fipe_data_collection)
+    save_price_history_data_objects(fipe_data_collection, vehicle)
 
     # Intancia objetos SuivData
     save_suiv_data_objects(suiv_data_collection, vehicle)
@@ -135,10 +134,10 @@ def save_fipe_data_objects(fipe_data_collection, vehicle):
     return FipeData.objects.bulk_create(fipe_data_objects)
 
 
-def save_price_history_data_objects(fipe_data_collection):
+def save_price_history_data_objects(fipe_data_collection, vehicle):
     price_history_objects = []
     for fipe_data in fipe_data_collection:
-        fipe_data_obj = FipeData.objects.get(fipe_id=fipe_data['fipeId'])
+        fipe_data_obj = FipeData.objects.get(fipe_id=fipe_data['fipeId'], vehicle=vehicle)
         for price_history in fipe_data['priceHistory']:
             ph_kwargs = {
                 'month_update': price_history['monthUpdate'],

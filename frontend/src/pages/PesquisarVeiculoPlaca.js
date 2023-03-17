@@ -12,6 +12,7 @@ function PesquisarVeiculoPlaca() {
     const [techSpecs, setTechSpecs] = useState({})
     const [revisionPlans, setRevisionPlans] = useState({})
     const [equipments, setEquipments] = useState({})
+    const [suivRequestsCount, setSuivRequestsCount] = useState(0)
     const [summary, setSummary] = useState()
     const [formData, setFormData] = useState({
         plate: '',
@@ -25,24 +26,22 @@ function PesquisarVeiculoPlaca() {
         }));
     };
 
-    const recuperarResumo = () => {
-        axios.get(`/api/Summary/byfipe?fipeId=${selectedModel.fipe_id}`)
+    const recuperarNumeroRequisicoesSuiv = () => {
+        axios.get(`/api/SuivRequestsCount`)
             .then(response => {
-                setSummary(response.data);
+                setSuivRequestsCount(response.data.count);
             })
             .catch(error => {
                 console.error(error);
             });
     }
 
+    const recuperarResumo = () => {
+        debouncedSummary(selectedModel)
+    }
+
     const recuperarEspecificacoesTecnicas = () => {
-        axios.get(`/api/TechnicalSpecs?plate=${formData.plate}`)
-            .then(response => {
-                setTechSpecs(response.data);
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        debouncedTechnicalSpecs(formData)
     }
 
     const recuperarRevisionPlans = () => {
@@ -63,6 +62,32 @@ function PesquisarVeiculoPlaca() {
         debouncedRecuperarPacoteBasico(selectedModel)
     };
 
+    const debouncedSummary = useCallback(debounce((selectedModel) => {
+        axios.get(`/api/Summary/byfipe?fipeId=${selectedModel.fipe_id}`)
+            .then(response => {
+                setSummary(response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            })
+            .finally(() => {
+                recuperarNumeroRequisicoesSuiv()
+            });
+    }, 1000), []);
+
+    const debouncedTechnicalSpecs = useCallback(debounce((formData) => {
+        axios.get(`/api/TechnicalSpecs?plate=${formData.plate}`)
+            .then(response => {
+                setTechSpecs(response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            })
+            .finally(() => {
+                recuperarNumeroRequisicoesSuiv()
+            });
+    }, 1000), []);
+
     const debouncedRevisionPlans = useCallback(debounce((selectedModel, vehicleData) => {
         let fipeId = selectedModel.fipe_id
         let versionId = vehicleData.suivDataCollection.find(suivData => suivData.fipe_id = fipeId).version_id
@@ -72,6 +97,9 @@ function PesquisarVeiculoPlaca() {
             })
             .catch(error => {
                 console.error(error);
+            })
+            .finally(() => {
+                recuperarNumeroRequisicoesSuiv()
             });
     }, 1000), []);
 
@@ -85,7 +113,10 @@ function PesquisarVeiculoPlaca() {
             })
             .catch(error => {
                 console.error(error);
+            }).finally(() => {
+                recuperarNumeroRequisicoesSuiv()
             });
+
     }, 1000), []);
 
     const debouncedPesquisarPlaca = useCallback(debounce((formData) => {
@@ -98,6 +129,8 @@ function PesquisarVeiculoPlaca() {
             })
             .catch(error => {
                 console.error(error);
+            }).finally(() => {
+                recuperarNumeroRequisicoesSuiv()
             });
     }, 1000), []);
 
@@ -108,6 +141,8 @@ function PesquisarVeiculoPlaca() {
             })
             .catch(error => {
                 console.error(error);
+            }).finally(() => {
+                recuperarNumeroRequisicoesSuiv()
             });
     }, 1000), []);
 
@@ -123,6 +158,10 @@ function PesquisarVeiculoPlaca() {
             setSelectedModel(vehicleData.fipeDataCollection[0])
         }
     }, [vehicleData])
+
+    useEffect(() => {
+        recuperarNumeroRequisicoesSuiv()
+    }, [])
     return (
         <div className="flex min-h-screen justify-center items-center">
             <div className="w-full p-4 lg:max-w-4xl xl:max-w-6xl">
@@ -358,7 +397,7 @@ function PesquisarVeiculoPlaca() {
 
 
                         <div className="p-2">
-                            Número de Requisições à SUIV: {vehicleData.suivRequestCount}
+                            Número de Requisições à SUIV: {suivRequestsCount}
                         </div>
                     </>
                 )}

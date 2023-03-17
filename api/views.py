@@ -318,3 +318,8 @@ class EquipmentsView(APIView):
 
         json_data = EquipmentSerializer(equipments, many=True).data
         return JsonResponse(json_data, safe=False)
+
+class SuivRequestsCountView(APIView):
+    def get(self, request, *args, **kwargs):
+        data = {"count": len(SUIVRequest.objects.all())}
+        return JsonResponse(data, safe=False)
