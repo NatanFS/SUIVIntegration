@@ -43,13 +43,14 @@ class VehicleInfoView(APIView):
 
             response = requests.get(url)
 
-            print("Fez request à SUIV")
-
-            # Registra chamada à SUIV
-            register_suiv_request(endpoint, inputs=inputs)
+            if response.status_code == 404 or response.status_code == 401:
+                register_suiv_request(endpoint, inputs=inputs)
+                return Response({'error': 'Data not found'}, status=404)
 
             if not response.ok:
                 return Response({'error': 'Fail retrieving data'}, status=500)
+            
+            register_suiv_request(endpoint, inputs=inputs)
 
             # Salva dados no banco
             if response.status_code == 200:
@@ -92,13 +93,14 @@ class BasicPackView(APIView):
 
             response = requests.get(url)
 
-            print("Fez request à SUIV")
-
-            # Registra chamada à SUIV
-            register_suiv_request(endpoint, inputs=inputs)
+            if response.status_code == 404 or response.status_code == 401:
+                register_suiv_request(endpoint, inputs=inputs)
+                return Response({'error': 'Data not found'}, status=404)
 
             if not response.ok:
                 return Response({'error': 'Fail retrieving data'}, status=500)
+            
+            register_suiv_request(endpoint, inputs=inputs)
 
             # Salva dados no banco
             if response.status_code == 200:
@@ -142,13 +144,14 @@ class SummaryView(APIView):
 
             response = requests.get(url)
 
-            print("Fez request à SUIV")
-
-            # Registra chamada à SUIV
-            register_suiv_request(endpoint, inputs=inputs)
+            if response.status_code == 404 or response.status_code == 401:
+                register_suiv_request(endpoint, inputs=inputs)
+                return Response({'error': 'Data not found'}, status=404)
 
             if not response.ok:
                 return Response({'error': 'Fail retrieving data'}, status=500)
+            
+            register_suiv_request(endpoint, inputs=inputs)
 
             # Salva dados no banco
             if response.status_code == 200:
@@ -191,13 +194,14 @@ class TechnicalSpecsByPlateView(APIView):
 
             response = requests.get(url)
 
-            print("Fez request à SUIV")
-
-            # Registra chamada à SUIV
-            register_suiv_request(endpoint, inputs=inputs)
+            if response.status_code == 404 or response.status_code == 401:
+                register_suiv_request(endpoint, inputs=inputs)
+                return Response({'error': 'Data not found'}, status=404)
 
             if not response.ok:
                 return Response({'error': 'Fail retrieving data'}, status=500)
+            
+            register_suiv_request(endpoint, inputs=inputs)
 
             # Salva dados no banco
             if response.status_code == 200:
@@ -237,7 +241,7 @@ class RevisionPlanView(APIView):
                 "versionId": version_id,
                 "year": year
             }
-
+            
             # Verifica se já houve requisição para o mesmo endpoint, com os mesmos inputs
             suiv_requests = SUIVRequest.objects.filter(
                 endpoint=endpoint, inputs__contains=inputs)
@@ -246,13 +250,14 @@ class RevisionPlanView(APIView):
 
             response = requests.get(url)
 
-            print("Fez request à SUIV")
-
-            # Registra chamada à SUIV
-            register_suiv_request(endpoint, inputs=inputs)
+            if response.status_code == 404 or response.status_code == 401:
+                register_suiv_request(endpoint, inputs=inputs)
+                return Response({'error': 'Data not found'}, status=404)
 
             if not response.ok:
                 return Response({'error': 'Fail retrieving data'}, status=500)
+            
+            register_suiv_request(endpoint, inputs=inputs)
 
             # Salva dados no banco
             if response.status_code == 200:
@@ -299,13 +304,14 @@ class EquipmentsView(APIView):
 
             response = requests.get(url)
 
-            print("Fez request à SUIV")
-
-            # Registra chamada à SUIV
-            register_suiv_request(endpoint, inputs=inputs)
+            if response.status_code == 404 or response.status_code == 401:
+                register_suiv_request(endpoint, inputs=inputs)
+                return Response({'error': 'Data not found'}, status=404)
 
             if not response.ok:
                 return Response({'error': 'Fail retrieving data'}, status=500)
+            
+            register_suiv_request(endpoint, inputs=inputs)
 
             # Salva dados no banco
             if response.status_code == 200:
