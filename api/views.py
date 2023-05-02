@@ -19,6 +19,7 @@ class VehicleInfoView(APIView):
 
         # Remove hífen da placa
         plate = plate.replace('-', '')
+        plate = plate.upper()
 
         # Procura dados no banco
         vehicle = Vehicle.objects.filter(plate=plate)
